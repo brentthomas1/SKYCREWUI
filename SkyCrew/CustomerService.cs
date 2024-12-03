@@ -385,5 +385,15 @@ namespace SkyCrew
                 }
             }
         }
+
+        private void pnlQuickActions_Paint(object sender, PaintEventArgs e)
+        {
+            // This is a placeholder for any custom painting logic
+        }
+
+        private void pnlShiftStats_Paint(object sender, PaintEventArgs e)
+        {
+            // This is a placeholder for any custom painting logic
+        }
     }
 }

@@ -169,5 +169,10 @@ namespace SkyCrew
                 MessageBox.Show("Error visualizing booking data: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void pnlDataAnalytics_Paint(object sender, PaintEventArgs e)
+        {
+            // This is a placeholder for any custom painting logic
+        }
     }
 }

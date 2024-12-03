@@ -147,5 +147,11 @@ namespace SkyCrew
         {
             Application.Exit();
         }
+
+        private void Management_Load(object sender, EventArgs e)
+        {
+            // Load initial data
+            LoadDashboardData();
+        }
     }
 }

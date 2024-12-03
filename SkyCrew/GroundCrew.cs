@@ -226,5 +226,16 @@ namespace SkyCrew
                 MessageBox.Show("An error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void dataGridViewShifts_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Handle cell content click event
+        }
+
+        private void GroundCrew_Load(object sender, EventArgs e)
+        {
+            // Load initial data
+            LoadShiftData();
+        }
     }
 }
