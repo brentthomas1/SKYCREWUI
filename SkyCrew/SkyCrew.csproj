@@ -68,6 +68,7 @@
       <DependentUpon>CustomerService.cs</DependentUpon>
     </Compile>
     <Compile Include="DatabaseConnection.cs" />
+    <Compile Include="MockDataProvider.cs" />
     <Compile Include="GroundCrew.cs">
       <SubType>Form</SubType>
     </Compile>
