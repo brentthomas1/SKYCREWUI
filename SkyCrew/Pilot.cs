@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Configuration;
 using System.Data;
-using System.Data.SqlClient;
+// STEP 1: Uncomment the following line when switching back to database
+// using System.Data.SqlClient;
 using System.Windows.Forms;
 using MaterialSkin;
 using MaterialSkin.Controls;
@@ -35,45 +36,55 @@ namespace SkyCrew
 
             LoadFlightSchedule();
             monthCalendar1.DateSelected += MonthCalendar1_DateSelected;
-            btnRequestLeave.Click += BtnRequestLeave_Click; // Bind the button click event
+            btnRequestLeave.Click += BtnRequestLeave_Click;
         }
 
         private void LoadFlightSchedule()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["LNBAirlines"].ConnectionString;
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            try
             {
-                try
+                // STEP 2: To switch back to database:
+                // 1. Remove the mock data implementation below
+                // 2. Uncomment the following database code block
+                /* DATABASE CODE START - UNCOMMENT THIS BLOCK
+                string connectionString = ConfigurationManager.ConnectionStrings["LNBAirlines"].ConnectionString;
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
                     string query = "SELECT FlightNumber, DepartureTime, ArrivalTime, Status FROM Flights";
                     SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
                     DataTable flightTable = new DataTable();
                     adapter.Fill(flightTable);
-
                     dataGridViewFlights.DataSource = flightTable;
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error loading flight schedule: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                DATABASE CODE END */
+
+                // MOCK IMPLEMENTATION - REMOVE THIS WHEN SWITCHING TO DATABASE
+                DataTable flightTable = MockDataProvider.GetMockFlightData(10);
+                dataGridViewFlights.DataSource = flightTable;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading flight schedule: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void MonthCalendar1_DateSelected(object sender, DateRangeEventArgs e)
         {
-            DateTime selectedDate = e.Start; // The date user clicked
+            DateTime selectedDate = e.Start;
             LoadFlightsForDate(selectedDate);
         }
 
         private void LoadFlightsForDate(DateTime date)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["LNBAirlines"].ConnectionString;
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            try
             {
-                try
+                // STEP 3: To switch back to database:
+                // 1. Remove the mock data implementation below
+                // 2. Uncomment the following database code block
+                /* DATABASE CODE START - UNCOMMENT THIS BLOCK
+                string connectionString = ConfigurationManager.ConnectionStrings["LNBAirlines"].ConnectionString;
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
                     string query = @"
@@ -84,7 +95,6 @@ namespace SkyCrew
                     adapter.SelectCommand.Parameters.AddWithValue("@SelectedDate", date);
                     DataTable flightTable = new DataTable();
                     adapter.Fill(flightTable);
-
                     dataGridViewFlights.DataSource = flightTable;
 
                     if (flightTable.Rows.Count == 0)
@@ -92,27 +102,50 @@ namespace SkyCrew
                         MessageBox.Show("No flights scheduled for the selected date.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
-                catch (Exception ex)
+                DATABASE CODE END */
+
+                // MOCK IMPLEMENTATION - REMOVE THIS WHEN SWITCHING TO DATABASE
+                DataTable allFlights = MockDataProvider.GetMockFlightData(20);
+                DataTable filteredFlights = allFlights.Clone();
+
+                foreach (DataRow row in allFlights.Rows)
                 {
-                    MessageBox.Show("Error loading flights for date: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    DateTime departureTime = Convert.ToDateTime(row["DepartureTime"]);
+                    if (departureTime.Date == date.Date)
+                    {
+                        filteredFlights.ImportRow(row);
+                    }
                 }
+
+                dataGridViewFlights.DataSource = filteredFlights;
+
+                if (filteredFlights.Rows.Count == 0)
+                {
+                    MessageBox.Show("No flights scheduled for the selected date.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading flights for date: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void BtnRequestLeave_Click(object sender, EventArgs e)
         {
-            // Ensure a flight is selected
             if (dataGridViewFlights.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Please select a flight to request leave.", "No Flight Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // Retrieve the selected flight's FlightNumber
             string selectedFlightNumber = dataGridViewFlights.SelectedRows[0].Cells["FlightNumber"].Value.ToString();
 
             try
             {
+                // STEP 4: To switch back to database:
+                // 1. Remove the mock implementation below
+                // 2. Uncomment the following database code block
+                /* DATABASE CODE START - UNCOMMENT THIS BLOCK
                 string connectionString = ConfigurationManager.ConnectionStrings["LNBAirlines"].ConnectionString;
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
@@ -126,7 +159,7 @@ namespace SkyCrew
                         if (rowsAffected > 0)
                         {
                             MessageBox.Show("Leave requested successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            LoadFlightsForDate(monthCalendar1.SelectionStart); // Refresh for the selected date
+                            LoadFlightsForDate(monthCalendar1.SelectionStart);
                         }
                         else
                         {
@@ -134,6 +167,11 @@ namespace SkyCrew
                         }
                     }
                 }
+                DATABASE CODE END */
+
+                // MOCK IMPLEMENTATION - REMOVE THIS WHEN SWITCHING TO DATABASE
+                MessageBox.Show("Leave requested successfully! (Mock Implementation)", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadFlightsForDate(monthCalendar1.SelectionStart);
             }
             catch (Exception ex)
             {
@@ -144,11 +182,6 @@ namespace SkyCrew
         private void btnExit_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-
-        private void pnlQuickActions_Paint(object sender, PaintEventArgs e)
-        {
-
         }
     }
 }

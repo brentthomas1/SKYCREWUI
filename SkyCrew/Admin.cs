@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Data.SqlClient;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using MaterialSkin;
@@ -28,8 +27,8 @@ namespace SkyCrew
 
             // Set form properties for a clean look
             this.Sizable = false;
-            this.MaximizeBox = true;  // Enable maximize box if needed
-            this.MinimizeBox = true;  // Enable minimize box if needed
+            this.MaximizeBox = true;
+            this.MinimizeBox = true;
         }
 
         private void btnGenerateReport_Click(object sender, EventArgs e)
@@ -44,79 +43,41 @@ namespace SkyCrew
 
             try
             {
-                using (SqlConnection conn = DatabaseConnection.ConnectToDatabase())
+                DataTable reportTable = new DataTable();
+                switch (selectedReport)
                 {
-                    string reportQuery = "";
+                    case "Flight Report":
+                        reportTable = GetMockFlightReport();
+                        break;
+                    case "Staff Report":
+                        reportTable = MockDataProvider.GetMockStaffData(15);
+                        break;
+                    case "Bookings Report":
+                        reportTable = MockDataProvider.GetMockBookingData(20);
+                        break;
+                    default:
+                        MessageBox.Show("Invalid report type selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                }
 
-                    // Determine the report type and set the appropriate query
-                    switch (selectedReport)
+                dataGridViewReport.DataSource = reportTable;
+
+                if (reportTable.Rows.Count > 0)
+                {
+                    MessageBox.Show($"{selectedReport} generated successfully! (Mock Data)", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    if (selectedReport == "Flight Report")
                     {
-                        case "Flight Report":
-                            reportQuery = @"
-                            SELECT 
-                                Status,
-                                COUNT(*) AS Count
-                            FROM Flights
-                            GROUP BY Status
-                            ORDER BY Status";
-                            break;
-
-                        case "Staff Report":
-                            reportQuery = @"
-                            SELECT 
-                                FirstName, 
-                                LastName, 
-                                Role, 
-                                Email, 
-                                HireDate
-                            FROM Users
-                            WHERE Role != 'Customer'
-                            ORDER BY Role, HireDate";
-                            break;
-
-                        case "Bookings Report":
-                            reportQuery = @"
-                            SELECT 
-                                BookingDate, 
-                                TicketPrice
-                            FROM Bookings
-                            ORDER BY BookingDate";
-                            break;
-
-                        default:
-                            MessageBox.Show("Invalid report type selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
+                        VisualizeFlightData(reportTable);
                     }
-
-                    // Execute the query and populate the DataGridView
-                    SqlDataAdapter dataAdapter = new SqlDataAdapter(reportQuery, conn);
-                    DataTable reportTable = new DataTable();
-                    dataAdapter.Fill(reportTable);
-
-                    dataGridViewReport.DataSource = reportTable;
-
-                    if (reportTable.Rows.Count > 0)
+                    else if (selectedReport == "Bookings Report")
                     {
-                        MessageBox.Show($"{selectedReport} generated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                        // Call method to visualize data based on the selected report
-                        if (selectedReport == "Flight Report")
-                        {
-                            VisualizeFlightData(reportTable);
-                        }
-                        else if (selectedReport == "Bookings Report")
-                        {
-                            VisualizeBookingData(reportTable);
-                        }
-                        else
-                        {
-                            chartReport.Series.Clear(); // Clear chart if not applicable
-                            chartReport.Titles.Clear();
-                        }
+                        VisualizeBookingData(reportTable);
                     }
                     else
                     {
-                        MessageBox.Show("No data found for the selected report.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        chartReport.Series.Clear();
+                        chartReport.Titles.Clear();
                     }
                 }
             }
@@ -126,14 +87,28 @@ namespace SkyCrew
             }
         }
 
-        /// <summary>
-        /// Visualize flight status counts on the chart
-        /// </summary>
+        private DataTable GetMockFlightReport()
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("Status", typeof(string));
+            dt.Columns.Add("Count", typeof(int));
+
+            string[] statuses = { "Scheduled", "Boarding", "In Flight", "Landed", "Delayed", "Cancelled" };
+            Random random = new Random();
+
+            foreach (string status in statuses)
+            {
+                dt.Rows.Add(status, random.Next(5, 50));
+            }
+
+            return dt;
+        }
+
         private void VisualizeFlightData(DataTable reportTable)
         {
             try
             {
-                chartReport.Series.Clear(); // Clear any existing series
+                chartReport.Series.Clear();
 
                 Series statusSeries = new Series("Status Count")
                 {
@@ -146,7 +121,6 @@ namespace SkyCrew
                 {
                     string status = row["Status"].ToString();
                     int count = Convert.ToInt32(row["Count"]);
-
                     statusSeries.Points.AddXY(status, count);
                 }
 
@@ -162,14 +136,11 @@ namespace SkyCrew
             }
         }
 
-        /// <summary>
-        /// Visualize booking data on the chart
-        /// </summary>
         private void VisualizeBookingData(DataTable reportTable)
         {
             try
             {
-                chartReport.Series.Clear(); // Clear any existing series
+                chartReport.Series.Clear();
 
                 Series bookingSeries = new Series("Ticket Prices")
                 {
@@ -183,7 +154,6 @@ namespace SkyCrew
                 {
                     DateTime bookingDate = Convert.ToDateTime(row["BookingDate"]);
                     double ticketPrice = Convert.ToDouble(row["TicketPrice"]);
-
                     bookingSeries.Points.AddXY(bookingDate, ticketPrice);
                 }
 
@@ -198,11 +168,6 @@ namespace SkyCrew
             {
                 MessageBox.Show("Error visualizing booking data: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        private void pnlDataAnalytics_Paint(object sender, PaintEventArgs e)
-        {
-
         }
     }
 }

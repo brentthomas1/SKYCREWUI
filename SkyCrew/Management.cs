@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Data;
+// STEP 1: Uncomment the following line when switching back to database
+// using System.Data.SqlClient;
 using System.Windows.Forms;
 using MaterialSkin;
 using MaterialSkin.Controls;
@@ -44,59 +46,63 @@ namespace SkyCrew
 
         private void LoadData()
         {
-            // Use mock data for testing
-            DataTable staffTable = GetMockStaffData();
-            dataGridViewStaff.DataSource = staffTable;
+            try
+            {
+                // STEP 2: To switch back to database:
+                // 1. Remove the mock data implementation below
+                // 2. Uncomment the following database code block
+                /* DATABASE CODE START - UNCOMMENT THIS BLOCK
+                using (SqlConnection conn = DatabaseConnection.ConnectToDatabase())
+                {
+                    // Load Staff Data
+                    string staffQuery = @"
+                        SELECT StaffID, FirstName + ' ' + LastName as Name, Role
+                        FROM Users 
+                        WHERE Role != 'Customer'
+                        ORDER BY Role, StaffID";
+                    SqlDataAdapter staffAdapter = new SqlDataAdapter(staffQuery, conn);
+                    DataTable staffTable = new DataTable();
+                    staffAdapter.Fill(staffTable);
+                    dataGridViewStaff.DataSource = staffTable;
 
-            DataTable flightsTable = GetMockFlightsData();
-            dataGridViewFlights.DataSource = flightsTable;
+                    // Load Flights Data
+                    string flightsQuery = @"
+                        SELECT FlightNumber, DepartureCity as Departure, ArrivalCity as Arrival, Status
+                        FROM Flights
+                        WHERE DepartureTime >= GETDATE()
+                        ORDER BY DepartureTime";
+                    SqlDataAdapter flightsAdapter = new SqlDataAdapter(flightsQuery, conn);
+                    DataTable flightsTable = new DataTable();
+                    flightsAdapter.Fill(flightsTable);
+                    dataGridViewFlights.DataSource = flightsTable;
 
-            DataTable bookingsTable = GetMockBookingsData();
-            dataGridViewBookings.DataSource = bookingsTable;
-        }
+                    // Load Bookings Data
+                    string bookingsQuery = @"
+                        SELECT 
+                            b.BookingID,
+                            u.FirstName + ' ' + u.LastName as PassengerName,
+                            f.FlightNumber,
+                            b.Status
+                        FROM Bookings b
+                        JOIN Users u ON b.UserID = u.UserID
+                        JOIN Flights f ON b.FlightID = f.FlightID
+                        ORDER BY b.BookingID DESC";
+                    SqlDataAdapter bookingsAdapter = new SqlDataAdapter(bookingsQuery, conn);
+                    DataTable bookingsTable = new DataTable();
+                    bookingsAdapter.Fill(bookingsTable);
+                    dataGridViewBookings.DataSource = bookingsTable;
+                }
+                DATABASE CODE END */
 
-        private DataTable GetMockStaffData()
-        {
-            DataTable dt = new DataTable();
-            dt.Columns.Add("StaffID", typeof(int));
-            dt.Columns.Add("Name", typeof(string));
-            dt.Columns.Add("Role", typeof(string));
-
-            dt.Rows.Add(1, "John Doe", "Pilot");
-            dt.Rows.Add(2, "Jane Smith", "Ground Crew");
-            dt.Rows.Add(3, "Bob Johnson", "Customer Service");
-
-            return dt;
-        }
-
-        private DataTable GetMockFlightsData()
-        {
-            DataTable dt = new DataTable();
-            dt.Columns.Add("FlightNumber", typeof(string));
-            dt.Columns.Add("Departure", typeof(string));
-            dt.Columns.Add("Arrival", typeof(string));
-            dt.Columns.Add("Status", typeof(string));
-
-            dt.Rows.Add("FL123", "New York", "London", "On Time");
-            dt.Rows.Add("FL456", "Paris", "Tokyo", "Delayed");
-            dt.Rows.Add("FL789", "Sydney", "Dubai", "Cancelled");
-
-            return dt;
-        }
-
-        private DataTable GetMockBookingsData()
-        {
-            DataTable dt = new DataTable();
-            dt.Columns.Add("BookingID", typeof(int));
-            dt.Columns.Add("PassengerName", typeof(string));
-            dt.Columns.Add("FlightNumber", typeof(string));
-            dt.Columns.Add("Status", typeof(string));
-
-            dt.Rows.Add(1001, "Alice Brown", "FL123", "Confirmed");
-            dt.Rows.Add(1002, "David Wilson", "FL456", "Pending");
-            dt.Rows.Add(1003, "Emily Davis", "FL789", "Cancelled");
-
-            return dt;
+                // MOCK IMPLEMENTATION - REMOVE THIS WHEN SWITCHING TO DATABASE
+                dataGridViewStaff.DataSource = MockDataProvider.GetMockStaffData();
+                dataGridViewFlights.DataSource = MockDataProvider.GetMockFlightData(10);
+                dataGridViewBookings.DataSource = MockDataProvider.GetMockBookingData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnOpenPilotForm_Click(object sender, EventArgs e)
@@ -125,17 +131,21 @@ namespace SkyCrew
 
         private void dataGridViewBookings_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Implement any cell click logic if needed
+            // STEP 3: To switch back to database:
+            // 1. Remove the mock implementation below (if any is added later)
+            // 2. Uncomment the following database code block if needed
+            /* DATABASE CODE START - UNCOMMENT THIS BLOCK
+            if (e.RowIndex >= 0)
+            {
+                string bookingId = dataGridViewBookings.Rows[e.RowIndex].Cells["BookingID"].Value.ToString();
+                // Add any booking-specific functionality here
+            }
+            DATABASE CODE END */
         }
 
         private void btnExit_Click(object sender, EventArgs e)
         {
             Application.Exit();
-        }
-
-        private void Management_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }
