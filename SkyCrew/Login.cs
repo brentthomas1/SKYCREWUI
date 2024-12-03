@@ -36,7 +36,6 @@ namespace SkyCrew
             comboBoxRole.Items.AddRange(new object[] {
                 "Ground Crew",
                 "Pilot",
-                "Customer Service",
                 "Admin",
                 "Management"
             });
@@ -78,10 +77,6 @@ namespace SkyCrew
                     case "Pilot":
                         Pilot pilotForm = new Pilot();
                         pilotForm.Show();
-                        break;
-                    case "Customer Service":
-                        CustomerService customerServiceForm = new CustomerService();
-                        customerServiceForm.Show();
                         break;
                     case "Admin":
                         Admin adminForm = new Admin();
