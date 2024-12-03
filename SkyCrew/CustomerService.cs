@@ -395,5 +395,24 @@ namespace SkyCrew
         {
             // This is a placeholder for any custom painting logic
         }
+
+        private void LoadBookingData()
+        {
+            // Load mock data for testing
+            var bookingData = MockDataProvider.GetMockBookingData();
+            dataGridViewBookings.DataSource = bookingData;
+        }
+
+        private void LoadShiftData()
+        {
+            // Load mock data for testing
+            var shiftStats = MockDataProvider.GetMockShiftStats();
+            if (shiftStats.Rows.Count > 0)
+            {
+                lblTotalShifts.Text = shiftStats.Rows[0]["TotalShifts"].ToString();
+                lblAvailableShifts.Text = shiftStats.Rows[0]["AvailableShifts"].ToString();
+                lblCompletedShifts.Text = shiftStats.Rows[0]["CompletedShifts"].ToString();
+            }
+        }
     }
 }

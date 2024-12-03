@@ -174,5 +174,16 @@ namespace SkyCrew
         {
             // This is a placeholder for any custom painting logic
         }
+
+        private void LoadDashboardData()
+        {
+            // Load mock data for testing
+            var staffData = MockDataProvider.GetMockStaffData();
+            var flightData = MockDataProvider.GetMockFlightData();
+            
+            // Update your UI controls with the data
+            dataGridViewStaff.DataSource = staffData;
+            dataGridViewFlights.DataSource = flightData;
+        }
     }
 }

@@ -237,5 +237,17 @@ namespace SkyCrew
             // Load initial data
             LoadShiftData();
         }
+
+        private void LoadShiftData()
+        {
+            // Load mock data for testing
+            var shiftData = MockDataProvider.GetMockShiftStats();
+            dataGridViewShifts.DataSource = shiftData;
+
+            // Load notifications
+            var notifications = MockDataProvider.GetMockNotifications("Ground Crew");
+            listBoxNotifications.Items.Clear();
+            listBoxNotifications.Items.AddRange(notifications);
+        }
     }
 }

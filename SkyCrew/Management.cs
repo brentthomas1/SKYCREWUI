@@ -153,5 +153,18 @@ namespace SkyCrew
             // Load initial data
             LoadDashboardData();
         }
+
+        private void LoadDashboardData()
+        {
+            // Load mock data for testing
+            var staffData = MockDataProvider.GetMockStaffData();
+            var flightData = MockDataProvider.GetMockFlightData();
+            var bookingData = MockDataProvider.GetMockBookingData();
+
+            // Update your UI controls with the data
+            dataGridViewStaff.DataSource = staffData;
+            dataGridViewFlights.DataSource = flightData;
+            dataGridViewBookings.DataSource = bookingData;
+        }
     }
 }

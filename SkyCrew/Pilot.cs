@@ -183,5 +183,22 @@ namespace SkyCrew
         {
             this.Close();
         }
+
+        private void pnlQuickActions_Paint(object sender, PaintEventArgs e)
+        {
+            // This is a placeholder for any custom painting logic
+        }
+
+        private void LoadFlightData()
+        {
+            // Load mock data for testing
+            var flightData = MockDataProvider.GetMockFlightData();
+            dataGridViewFlights.DataSource = flightData;
+
+            // Load notifications
+            var notifications = MockDataProvider.GetMockNotifications("Pilot");
+            listBoxNotifications.Items.Clear();
+            listBoxNotifications.Items.AddRange(notifications);
+        }
     }
 }
