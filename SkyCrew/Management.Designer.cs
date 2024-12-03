@@ -34,7 +34,6 @@ namespace SkyCrew
             this.lblBookingsOverview = new MaterialSkin.Controls.MaterialLabel();
             this.btnOpenPilotForm = new MaterialSkin.Controls.MaterialButton();
             this.btnOpenGroundCrewForm = new MaterialSkin.Controls.MaterialButton();
-            this.btnOpenCustomerServiceForm = new MaterialSkin.Controls.MaterialButton();
             this.btnOpenAdminForm = new MaterialSkin.Controls.MaterialButton();
             this.pnlStaffOverview.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewStaff)).BeginInit();
@@ -224,27 +223,6 @@ namespace SkyCrew
             this.btnOpenGroundCrewForm.UseVisualStyleBackColor = true;
             this.btnOpenGroundCrewForm.Click += new System.EventHandler(this.btnOpenGroundCrewForm_Click);
             // 
-            // btnOpenCustomerServiceForm
-            // 
-            this.btnOpenCustomerServiceForm.AutoSize = false;
-            this.btnOpenCustomerServiceForm.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnOpenCustomerServiceForm.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnOpenCustomerServiceForm.Depth = 0;
-            this.btnOpenCustomerServiceForm.HighEmphasis = true;
-            this.btnOpenCustomerServiceForm.Icon = null;
-            this.btnOpenCustomerServiceForm.Location = new System.Drawing.Point(370, 800);
-            this.btnOpenCustomerServiceForm.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnOpenCustomerServiceForm.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnOpenCustomerServiceForm.Name = "btnOpenCustomerServiceForm";
-            this.btnOpenCustomerServiceForm.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnOpenCustomerServiceForm.Size = new System.Drawing.Size(200, 36);
-            this.btnOpenCustomerServiceForm.TabIndex = 7;
-            this.btnOpenCustomerServiceForm.Text = "Open Customer Service";
-            this.btnOpenCustomerServiceForm.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btnOpenCustomerServiceForm.UseAccentColor = false;
-            this.btnOpenCustomerServiceForm.UseVisualStyleBackColor = true;
-            this.btnOpenCustomerServiceForm.Click += new System.EventHandler(this.btnOpenCustomerServiceForm_Click);
-            // 
             // btnOpenAdminForm
             // 
             this.btnOpenAdminForm.AutoSize = false;
@@ -270,7 +248,6 @@ namespace SkyCrew
             // 
             this.ClientSize = new System.Drawing.Size(1360, 860);
             this.Controls.Add(this.btnOpenAdminForm);
-            this.Controls.Add(this.btnOpenCustomerServiceForm);
             this.Controls.Add(this.btnOpenGroundCrewForm);
             this.Controls.Add(this.btnOpenPilotForm);
             this.Controls.Add(this.pnlBookingsOverview);
@@ -311,7 +288,6 @@ namespace SkyCrew
         private MaterialLabel lblBookingsOverview;
         private MaterialButton btnOpenPilotForm;
         private MaterialButton btnOpenGroundCrewForm;
-        private MaterialButton btnOpenCustomerServiceForm;
         private MaterialButton btnOpenAdminForm;
     }
 }

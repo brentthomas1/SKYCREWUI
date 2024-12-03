@@ -32,13 +32,12 @@ namespace SkyCrew
             this.MinimizeBox = false;
             this.StartPosition = FormStartPosition.CenterScreen;
 
-            // Add roles to the combo box
-            comboBoxRole.Items.AddRange(new object[] {
-                "Ground Crew",
-                "Pilot",
-                "Admin",
-                "Management"
-            });
+            // Add roles to the combo box - using the roles from MockDataProvider
+            var uniqueRoles = MockDataProvider.MockCredentials
+                .Select(c => c.Role)
+                .Distinct()
+                .ToArray();
+            comboBoxRole.Items.AddRange(uniqueRoles);
             comboBoxRole.SelectedIndex = 0; // Set default selection
 
             // Bind event handlers
@@ -49,60 +48,56 @@ namespace SkyCrew
 
         private void buttonLogin_Click(object sender, EventArgs e)
         {
-            // Handle login logic here
-            string email = txtEmail.Text.Trim();
+            string username = txtEmail.Text.Trim();
             string password = txtPassword.Text.Trim();
-            string role = comboBoxRole.SelectedItem.ToString();
 
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
-                MessageBox.Show("Please enter your email and password.", "Missing Information", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please enter your username and password.", "Missing Information", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // For testing without database, we'll simulate a successful login
-            // You can replace this with your actual database authentication logic
-
-            if (email == "test@example.com" && password == "password")
+            string role;
+            if (MockDataProvider.ValidateLogin(username, password, out role))
             {
                 MessageBox.Show($"Login successful as {role}!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 // Open the corresponding dashboard based on role
+                Form dashboardForm = null;
                 switch (role)
                 {
                     case "Ground Crew":
-                        GroundCrew groundCrewForm = new GroundCrew();
-                        groundCrewForm.Show();
+                        dashboardForm = new GroundCrew();
                         break;
                     case "Pilot":
-                        Pilot pilotForm = new Pilot();
-                        pilotForm.Show();
+                        dashboardForm = new Pilot();
                         break;
                     case "Admin":
-                        Admin adminForm = new Admin();
-                        adminForm.Show();
+                        dashboardForm = new Admin();
                         break;
                     case "Management":
-                        Management managementForm = new Management();
-                        managementForm.Show();
+                        dashboardForm = new Management();
                         break;
                     default:
-                        MessageBox.Show("Invalid role selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        break;
+                        MessageBox.Show("Invalid role assigned.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
                 }
 
-                this.Hide();
+                if (dashboardForm != null)
+                {
+                    dashboardForm.Show();
+                    this.Hide();
+                }
             }
             else
             {
-                MessageBox.Show("Invalid email or password.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Invalid username or password.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void comboBoxRole_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Handle role selection change if needed
-            // For now, no specific action is required
+            // Role selection is now handled during login validation
         }
 
         private void buttonExit_Click(object sender, EventArgs e)

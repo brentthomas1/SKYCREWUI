@@ -152,22 +152,11 @@ namespace SkyCrew
                 "Inventory check required"
             };
 
-            string[] customerServiceNotifications = {
-                "New booking requires attention",
-                "Customer feedback received",
-                "Schedule change affects multiple bookings",
-                "System maintenance notification",
-                "Team meeting reminder",
-                "New policy update",
-                "Service quality review scheduled"
-            };
-
             string[] notifications = userRole.ToLower() switch
             {
                 "pilot" => pilotNotifications,
                 "ground crew" => groundCrewNotifications,
-                "customer service" => customerServiceNotifications,
-                _ => customerServiceNotifications
+                _ => pilotNotifications
             };
 
             string[] result = new string[count];

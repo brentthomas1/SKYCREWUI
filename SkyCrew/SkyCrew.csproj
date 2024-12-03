@@ -61,14 +61,7 @@
     <Compile Include="Admin.Designer.cs">
       <DependentUpon>Admin.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomerService.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CustomerService.Designer.cs">
-      <DependentUpon>CustomerService.cs</DependentUpon>
-    </Compile>
     <Compile Include="DatabaseConnection.cs" />
-    <Compile Include="MockDataProvider.cs" />
     <Compile Include="GroundCrew.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -97,9 +90,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Admin.resx">
       <DependentUpon>Admin.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CustomerService.resx">
-      <DependentUpon>CustomerService.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GroundCrew.resx">
       <DependentUpon>GroundCrew.cs</DependentUpon>
