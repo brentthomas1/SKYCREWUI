@@ -33,6 +33,13 @@ namespace SkyCrew
             this.MinimizeBox = false;
             this.StartPosition = FormStartPosition.CenterScreen;
 
+            // Bind event handlers
+            btnOpenPilotForm.Click += btnOpenPilotForm_Click;
+            btnOpenGroundCrewForm.Click += btnOpenGroundCrewForm_Click;
+            btnOpenCustomerServiceForm.Click += btnOpenCustomerServiceForm_Click;
+            btnOpenAdminForm.Click += btnOpenAdminForm_Click;
+            dataGridViewBookings.CellContentClick += dataGridViewBookings_CellContentClick;
+
             LoadDashboardData();
         }
 
@@ -59,7 +66,7 @@ namespace SkyCrew
                     SqlDataAdapter staffAdapter = new SqlDataAdapter(staffQuery, conn);
                     DataTable staffTable = new DataTable();
                     staffAdapter.Fill(staffTable);
-                    dataGridView1.DataSource = staffTable;
+                    dataGridViewStaff.DataSource = staffTable;
 
                     // Load Flights Data
                     string flightsQuery = @"
@@ -76,7 +83,7 @@ namespace SkyCrew
                     SqlDataAdapter flightsAdapter = new SqlDataAdapter(flightsQuery, conn);
                     DataTable flightsTable = new DataTable();
                     flightsAdapter.Fill(flightsTable);
-                    dataGridView2.DataSource = flightsTable;
+                    dataGridViewFlights.DataSource = flightsTable;
 
                     // Load Bookings Data
                     string bookingsQuery = @"
@@ -94,7 +101,7 @@ namespace SkyCrew
                     SqlDataAdapter bookingsAdapter = new SqlDataAdapter(bookingsQuery, conn);
                     DataTable bookingsTable = new DataTable();
                     bookingsAdapter.Fill(bookingsTable);
-                    dataGridView3.DataSource = bookingsTable;
+                    dataGridViewBookings.DataSource = bookingsTable;
                 }
                 DATABASE CODE END */
 
@@ -104,14 +111,45 @@ namespace SkyCrew
                 var bookingData = MockDataProvider.GetMockBookingData();
 
                 // Update your UI controls with the data
-                dataGridView1.DataSource = staffData;
-                dataGridView2.DataSource = flightData;
-                dataGridView3.DataSource = bookingData;
+                dataGridViewStaff.DataSource = staffData;
+                dataGridViewFlights.DataSource = flightData;
+                dataGridViewBookings.DataSource = bookingData;
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error loading data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void btnOpenPilotForm_Click(object sender, EventArgs e)
+        {
+            Pilot pilotForm = new Pilot();
+            pilotForm.Show();
+        }
+
+        private void btnOpenGroundCrewForm_Click(object sender, EventArgs e)
+        {
+            GroundCrew groundCrewForm = new GroundCrew();
+            groundCrewForm.Show();
+        }
+
+        private void btnOpenCustomerServiceForm_Click(object sender, EventArgs e)
+        {
+            CustomerService customerServiceForm = new CustomerService();
+            customerServiceForm.Show();
+        }
+
+        private void btnOpenAdminForm_Click(object sender, EventArgs e)
+        {
+            Admin adminForm = new Admin();
+            adminForm.Show();
+        }
+
+        private void dataGridViewBookings_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Handle cell content click event
+            // STEP 3: To switch back to database:
+            // Add your database-specific handling code here
         }
 
         private void Management_Load(object sender, EventArgs e)
