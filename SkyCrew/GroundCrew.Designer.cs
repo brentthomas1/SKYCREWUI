@@ -30,6 +30,7 @@ namespace SkyCrew
             this.buttonCancelShift = new MaterialSkin.Controls.MaterialButton();
             this.lblQuickActions = new MaterialSkin.Controls.MaterialLabel();
             this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
+            this.listBoxNotifications = new System.Windows.Forms.ListBox();
             this.pnlUpcomingShifts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewShifts)).BeginInit();
             this.pnlQuickActions.SuspendLayout();
@@ -158,12 +159,22 @@ namespace SkyCrew
             this.monthCalendar1.Name = "monthCalendar1";
             this.monthCalendar1.TabIndex = 3;
             // 
+            // listBoxNotifications
+            // 
+            this.listBoxNotifications.FormattingEnabled = true;
+            this.listBoxNotifications.ItemHeight = 20;
+            this.listBoxNotifications.Location = new System.Drawing.Point(840, 560);
+            this.listBoxNotifications.Name = "listBoxNotifications";
+            this.listBoxNotifications.Size = new System.Drawing.Size(300, 60);
+            this.listBoxNotifications.TabIndex = 4;
+            // 
             // GroundCrew
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(1160, 626);
+            this.Controls.Add(this.listBoxNotifications);
             this.Controls.Add(this.monthCalendar1);
             this.Controls.Add(this.pnlQuickActions);
             this.Controls.Add(this.pnlUpcomingShifts);
@@ -192,5 +203,6 @@ namespace SkyCrew
         private MaterialButton buttonAcceptShift;
         private MaterialButton buttonCancelShift;
         private System.Windows.Forms.MonthCalendar monthCalendar1;
+        private System.Windows.Forms.ListBox listBoxNotifications;
     }
 }
