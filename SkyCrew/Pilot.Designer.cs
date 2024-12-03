@@ -30,6 +30,7 @@ namespace SkyCrew
             this.btnRequestLeave = new MaterialSkin.Controls.MaterialButton();
             this.lblQuickActions = new MaterialSkin.Controls.MaterialLabel();
             this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
+            this.listBoxNotifications = new System.Windows.Forms.ListBox();
             this.pnlUpcomingFlights.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFlights)).BeginInit();
             this.pnlQuickActions.SuspendLayout();
@@ -149,9 +150,19 @@ namespace SkyCrew
             this.monthCalendar1.Name = "monthCalendar1";
             this.monthCalendar1.TabIndex = 4;
             // 
+            // listBoxNotifications
+            // 
+            this.listBoxNotifications.FormattingEnabled = true;
+            this.listBoxNotifications.ItemHeight = 20;
+            this.listBoxNotifications.Location = new System.Drawing.Point(540, 320);
+            this.listBoxNotifications.Name = "listBoxNotifications";
+            this.listBoxNotifications.Size = new System.Drawing.Size(312, 94);
+            this.listBoxNotifications.TabIndex = 5;
+            // 
             // Pilot
             // 
             this.ClientSize = new System.Drawing.Size(893, 600);
+            this.Controls.Add(this.listBoxNotifications);
             this.Controls.Add(this.monthCalendar1);
             this.Controls.Add(this.pnlQuickActions);
             this.Controls.Add(this.pnlUpcomingFlights);
@@ -181,5 +192,6 @@ namespace SkyCrew
         private MaterialButton btnRequestLeave;
         private MaterialLabel lblQuickActions;
         private MonthCalendar monthCalendar1;
+        private System.Windows.Forms.ListBox listBoxNotifications;
     }
 }
