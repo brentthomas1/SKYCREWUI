@@ -35,7 +35,6 @@ namespace SkyCrew
             // Bind event handlers
             btnOpenPilotForm.Click += btnOpenPilotForm_Click;
             btnOpenGroundCrewForm.Click += btnOpenGroundCrewForm_Click;
-            btnOpenCustomerServiceForm.Click += btnOpenCustomerServiceForm_Click;
             btnOpenAdminForm.Click += btnOpenAdminForm_Click;
             dataGridViewBookings.CellContentClick += dataGridViewBookings_CellContentClick;
 
@@ -130,12 +129,6 @@ namespace SkyCrew
         {
             GroundCrew groundCrewForm = new GroundCrew();
             groundCrewForm.Show();
-        }
-
-        private void btnOpenCustomerServiceForm_Click(object sender, EventArgs e)
-        {
-            CustomerService customerServiceForm = new CustomerService();
-            customerServiceForm.Show();
         }
 
         private void btnOpenAdminForm_Click(object sender, EventArgs e)

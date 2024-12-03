@@ -2,7 +2,6 @@
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
 using MaterialSkin;
 using MaterialSkin.Controls;
 using SkyCrew;
