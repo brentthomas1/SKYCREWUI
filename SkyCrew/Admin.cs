@@ -29,6 +29,48 @@ namespace SkyCrew
             this.Sizable = false;
             this.MaximizeBox = true;
             this.MinimizeBox = true;
+
+            LoadDashboardData();
+        }
+
+        private void LoadDashboardData()
+        {
+            // STEP 1: To switch back to database:
+            // 1. Remove the mock data implementation below
+            // 2. Uncomment the following database code block
+            /* DATABASE CODE START - UNCOMMENT THIS BLOCK
+            using (SqlConnection conn = DatabaseConnection.ConnectToDatabase())
+            {
+                string query = @"
+                    SELECT TOP 10
+                        StaffID,
+                        FirstName + ' ' + LastName as Name,
+                        Role,
+                        Email,
+                        Status
+                    FROM Staff
+                    ORDER BY StaffID DESC";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                conn.Open();
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                DataTable staffData = new DataTable();
+                adapter.Fill(staffData);
+                dataGridViewReport.DataSource = staffData;
+            }
+            DATABASE CODE END */
+
+            // MOCK IMPLEMENTATION - REMOVE THIS WHEN SWITCHING TO DATABASE
+            var staffData = MockDataProvider.GetMockStaffData();
+            var flightData = MockDataProvider.GetMockFlightData();
+            
+            // Update your UI controls with the data
+            dataGridViewReport.DataSource = staffData;
+        }
+
+        private void pnlDataAnalytics_Paint(object sender, PaintEventArgs e)
+        {
+            // This is a placeholder for any custom painting logic
         }
 
         private void btnGenerateReport_Click(object sender, EventArgs e)
@@ -43,147 +85,77 @@ namespace SkyCrew
 
             try
             {
-                DataTable reportTable = new DataTable();
+                // STEP 2: To switch back to database:
+                // 1. Remove the mock data implementation below
+                // 2. Uncomment the following database code block
+                /* DATABASE CODE START - UNCOMMENT THIS BLOCK
+                using (SqlConnection conn = DatabaseConnection.ConnectToDatabase())
+                {
+                    string query = "";
+                    switch (selectedReport)
+                    {
+                        case "Flight Report":
+                            query = @"
+                                SELECT 
+                                    Status,
+                                    COUNT(*) as Count
+                                FROM Flights
+                                GROUP BY Status";
+                            break;
+                        case "Staff Report":
+                            query = @"
+                                SELECT 
+                                    StaffID,
+                                    FirstName + ' ' + LastName as Name,
+                                    Role,
+                                    Email,
+                                    Status
+                                FROM Staff";
+                            break;
+                        case "Bookings Report":
+                            query = @"
+                                SELECT 
+                                    b.BookingID,
+                                    p.FirstName + ' ' + p.LastName as PassengerName,
+                                    f.FlightNumber,
+                                    b.BookingDate,
+                                    b.Status,
+                                    b.TicketPrice
+                                FROM Bookings b
+                                JOIN Passengers p ON b.PassengerID = p.PassengerID
+                                JOIN Flights f ON b.FlightID = f.FlightID";
+                            break;
+                    }
+
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    conn.Open();
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    DataTable reportTable = new DataTable();
+                    adapter.Fill(reportTable);
+                    dataGridViewReport.DataSource = reportTable;
+                }
+                DATABASE CODE END */
+
+                // MOCK IMPLEMENTATION - REMOVE THIS WHEN SWITCHING TO DATABASE
                 switch (selectedReport)
                 {
-                    case "Flight Report":
-                        reportTable = GetMockFlightReport();
-                        break;
                     case "Staff Report":
-                        reportTable = MockDataProvider.GetMockStaffData(15);
+                        dataGridViewReport.DataSource = MockDataProvider.GetMockStaffData();
+                        break;
+                    case "Flight Report":
+                        dataGridViewReport.DataSource = MockDataProvider.GetMockFlightData();
                         break;
                     case "Bookings Report":
-                        reportTable = MockDataProvider.GetMockBookingData(20);
+                        dataGridViewReport.DataSource = MockDataProvider.GetMockBookingData();
                         break;
-                    default:
-                        MessageBox.Show("Invalid report type selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
                 }
 
-                dataGridViewReport.DataSource = reportTable;
-
-                if (reportTable.Rows.Count > 0)
-                {
-                    MessageBox.Show($"{selectedReport} generated successfully! (Mock Data)", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    if (selectedReport == "Flight Report")
-                    {
-                        VisualizeFlightData(reportTable);
-                    }
-                    else if (selectedReport == "Bookings Report")
-                    {
-                        VisualizeBookingData(reportTable);
-                    }
-                    else
-                    {
-                        chartReport.Series.Clear();
-                        chartReport.Titles.Clear();
-                    }
-                }
+                MessageBox.Show($"{selectedReport} generated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error generating report: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        private DataTable GetMockFlightReport()
-        {
-            DataTable dt = new DataTable();
-            dt.Columns.Add("Status", typeof(string));
-            dt.Columns.Add("Count", typeof(int));
-
-            string[] statuses = { "Scheduled", "Boarding", "In Flight", "Landed", "Delayed", "Cancelled" };
-            Random random = new Random();
-
-            foreach (string status in statuses)
-            {
-                dt.Rows.Add(status, random.Next(5, 50));
-            }
-
-            return dt;
-        }
-
-        private void VisualizeFlightData(DataTable reportTable)
-        {
-            try
-            {
-                chartReport.Series.Clear();
-
-                Series statusSeries = new Series("Status Count")
-                {
-                    ChartType = SeriesChartType.Column,
-                    XValueType = ChartValueType.String,
-                    YValueType = ChartValueType.Int32
-                };
-
-                foreach (DataRow row in reportTable.Rows)
-                {
-                    string status = row["Status"].ToString();
-                    int count = Convert.ToInt32(row["Count"]);
-                    statusSeries.Points.AddXY(status, count);
-                }
-
-                chartReport.Series.Add(statusSeries);
-                chartReport.ChartAreas[0].AxisX.Title = "Status";
-                chartReport.ChartAreas[0].AxisY.Title = "Count";
-                chartReport.Titles.Clear();
-                chartReport.Titles.Add("Flight Status Overview");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error visualizing data: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void VisualizeBookingData(DataTable reportTable)
-        {
-            try
-            {
-                chartReport.Series.Clear();
-
-                Series bookingSeries = new Series("Ticket Prices")
-                {
-                    ChartType = SeriesChartType.Line,
-                    XValueType = ChartValueType.DateTime,
-                    YValueType = ChartValueType.Double,
-                    BorderWidth = 2
-                };
-
-                foreach (DataRow row in reportTable.Rows)
-                {
-                    DateTime bookingDate = Convert.ToDateTime(row["BookingDate"]);
-                    double ticketPrice = Convert.ToDouble(row["TicketPrice"]);
-                    bookingSeries.Points.AddXY(bookingDate, ticketPrice);
-                }
-
-                chartReport.Series.Add(bookingSeries);
-                chartReport.ChartAreas[0].AxisX.Title = "Booking Date";
-                chartReport.ChartAreas[0].AxisX.LabelStyle.Format = "MM-dd-yyyy";
-                chartReport.ChartAreas[0].AxisY.Title = "Ticket Price";
-                chartReport.Titles.Clear();
-                chartReport.Titles.Add("Ticket Price Trends");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error visualizing booking data: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void pnlDataAnalytics_Paint(object sender, PaintEventArgs e)
-        {
-            // This is a placeholder for any custom painting logic
-        }
-
-        private void LoadDashboardData()
-        {
-            // Load mock data for testing
-            var staffData = MockDataProvider.GetMockStaffData();
-            var flightData = MockDataProvider.GetMockFlightData();
-            
-            // Update your UI controls with the data
-            dataGridViewStaff.DataSource = staffData;
-            dataGridViewFlights.DataSource = flightData;
         }
     }
 }

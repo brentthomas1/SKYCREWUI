@@ -33,18 +33,10 @@ namespace SkyCrew
             this.MinimizeBox = false;
             this.StartPosition = FormStartPosition.CenterScreen;
 
-            LoadData();
-
-            // Bind event handlers
-            btnOpenPilotForm.Click += btnOpenPilotForm_Click;
-            btnOpenGroundCrewForm.Click += btnOpenGroundCrewForm_Click;
-            btnOpenCustomerServiceForm.Click += btnOpenCustomerServiceForm_Click;
-            btnOpenAdminForm.Click += btnOpenAdminForm_Click;
-            btnExit.Click += btnExit_Click;
-            dataGridViewBookings.CellContentClick += dataGridViewBookings_CellContentClick;
+            LoadDashboardData();
         }
 
-        private void LoadData()
+        private void LoadDashboardData()
         {
             try
             {
@@ -56,48 +48,65 @@ namespace SkyCrew
                 {
                     // Load Staff Data
                     string staffQuery = @"
-                        SELECT StaffID, FirstName + ' ' + LastName as Name, Role
-                        FROM Users 
-                        WHERE Role != 'Customer'
+                        SELECT 
+                            StaffID,
+                            FirstName + ' ' + LastName as Name,
+                            Role,
+                            Email,
+                            Status
+                        FROM Staff
                         ORDER BY Role, StaffID";
                     SqlDataAdapter staffAdapter = new SqlDataAdapter(staffQuery, conn);
                     DataTable staffTable = new DataTable();
                     staffAdapter.Fill(staffTable);
-                    dataGridViewStaff.DataSource = staffTable;
+                    dataGridView1.DataSource = staffTable;
 
                     // Load Flights Data
                     string flightsQuery = @"
-                        SELECT FlightNumber, DepartureCity as Departure, ArrivalCity as Arrival, Status
+                        SELECT 
+                            FlightNumber,
+                            DepartureTime,
+                            ArrivalTime,
+                            Status,
+                            Gate,
+                            Aircraft
                         FROM Flights
                         WHERE DepartureTime >= GETDATE()
                         ORDER BY DepartureTime";
                     SqlDataAdapter flightsAdapter = new SqlDataAdapter(flightsQuery, conn);
                     DataTable flightsTable = new DataTable();
                     flightsAdapter.Fill(flightsTable);
-                    dataGridViewFlights.DataSource = flightsTable;
+                    dataGridView2.DataSource = flightsTable;
 
                     // Load Bookings Data
                     string bookingsQuery = @"
                         SELECT 
                             b.BookingID,
-                            u.FirstName + ' ' + u.LastName as PassengerName,
+                            p.FirstName + ' ' + p.LastName as PassengerName,
                             f.FlightNumber,
-                            b.Status
+                            b.BookingDate,
+                            b.Status,
+                            b.TicketPrice
                         FROM Bookings b
-                        JOIN Users u ON b.UserID = u.UserID
+                        JOIN Passengers p ON b.PassengerID = p.PassengerID
                         JOIN Flights f ON b.FlightID = f.FlightID
-                        ORDER BY b.BookingID DESC";
+                        ORDER BY b.BookingDate DESC";
                     SqlDataAdapter bookingsAdapter = new SqlDataAdapter(bookingsQuery, conn);
                     DataTable bookingsTable = new DataTable();
                     bookingsAdapter.Fill(bookingsTable);
-                    dataGridViewBookings.DataSource = bookingsTable;
+                    dataGridView3.DataSource = bookingsTable;
                 }
                 DATABASE CODE END */
 
                 // MOCK IMPLEMENTATION - REMOVE THIS WHEN SWITCHING TO DATABASE
-                dataGridViewStaff.DataSource = MockDataProvider.GetMockStaffData();
-                dataGridViewFlights.DataSource = MockDataProvider.GetMockFlightData(10);
-                dataGridViewBookings.DataSource = MockDataProvider.GetMockBookingData();
+                var staffData = MockDataProvider.GetMockStaffData();
+                var flightData = MockDataProvider.GetMockFlightData();
+                var bookingData = MockDataProvider.GetMockBookingData();
+
+                // Update your UI controls with the data
+                dataGridView1.DataSource = staffData;
+                dataGridView2.DataSource = flightData;
+                dataGridView3.DataSource = bookingData;
             }
             catch (Exception ex)
             {
@@ -105,66 +114,10 @@ namespace SkyCrew
             }
         }
 
-        private void btnOpenPilotForm_Click(object sender, EventArgs e)
-        {
-            Pilot pilotForm = new Pilot();
-            pilotForm.Show();
-        }
-
-        private void btnOpenGroundCrewForm_Click(object sender, EventArgs e)
-        {
-            GroundCrew groundCrewForm = new GroundCrew();
-            groundCrewForm.Show();
-        }
-
-        private void btnOpenCustomerServiceForm_Click(object sender, EventArgs e)
-        {
-            CustomerService customerServiceForm = new CustomerService();
-            customerServiceForm.Show();
-        }
-
-        private void btnOpenAdminForm_Click(object sender, EventArgs e)
-        {
-            Admin adminForm = new Admin();
-            adminForm.Show();
-        }
-
-        private void dataGridViewBookings_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            // STEP 3: To switch back to database:
-            // 1. Remove the mock implementation below (if any is added later)
-            // 2. Uncomment the following database code block if needed
-            /* DATABASE CODE START - UNCOMMENT THIS BLOCK
-            if (e.RowIndex >= 0)
-            {
-                string bookingId = dataGridViewBookings.Rows[e.RowIndex].Cells["BookingID"].Value.ToString();
-                // Add any booking-specific functionality here
-            }
-            DATABASE CODE END */
-        }
-
-        private void btnExit_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
         private void Management_Load(object sender, EventArgs e)
         {
             // Load initial data
             LoadDashboardData();
-        }
-
-        private void LoadDashboardData()
-        {
-            // Load mock data for testing
-            var staffData = MockDataProvider.GetMockStaffData();
-            var flightData = MockDataProvider.GetMockFlightData();
-            var bookingData = MockDataProvider.GetMockBookingData();
-
-            // Update your UI controls with the data
-            dataGridViewStaff.DataSource = staffData;
-            dataGridViewFlights.DataSource = flightData;
-            dataGridViewBookings.DataSource = bookingData;
         }
     }
 }
