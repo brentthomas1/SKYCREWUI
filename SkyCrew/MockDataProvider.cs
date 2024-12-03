@@ -152,12 +152,19 @@ namespace SkyCrew
                 "Inventory check required"
             };
 
-            string[] notifications = userRole.ToLower() switch
+            string[] notifications;
+            switch (userRole.ToLower())
             {
-                "pilot" => pilotNotifications,
-                "ground crew" => groundCrewNotifications,
-                _ => pilotNotifications
-            };
+                case "pilot":
+                    notifications = pilotNotifications;
+                    break;
+                case "ground crew":
+                    notifications = groundCrewNotifications;
+                    break;
+                default:
+                    notifications = pilotNotifications;
+                    break;
+            }
 
             string[] result = new string[count];
             for (int i = 0; i < count; i++)
