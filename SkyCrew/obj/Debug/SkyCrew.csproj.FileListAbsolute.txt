@@ -35,3 +35,13 @@ C:\Users\btsho\Source\Repos\SKYCREWUI\SkyCrew\SkyCrew\obj\Debug\SkyCrew.csproj.C
 C:\Users\btsho\Source\Repos\SKYCREWUI\SkyCrew\SkyCrew\obj\Debug\SkyCrew.csproj.Up2Date
 C:\Users\btsho\Source\Repos\SKYCREWUI\SkyCrew\SkyCrew\obj\Debug\SkyCrew.exe
 C:\Users\btsho\Source\Repos\SKYCREWUI\SkyCrew\SkyCrew\obj\Debug\SkyCrew.pdb
+C:\Users\btsho\Source\Repos\SKYCREWUIMOCK\SkyCrew\obj\Debug\SkyCrew.csproj.AssemblyReference.cache
+C:\Users\btsho\Source\Repos\SKYCREWUIMOCK\SkyCrew\obj\Debug\SkyCrew.Admin.resources
+C:\Users\btsho\Source\Repos\SKYCREWUIMOCK\SkyCrew\obj\Debug\SkyCrew.CustomerService.resources
+C:\Users\btsho\Source\Repos\SKYCREWUIMOCK\SkyCrew\obj\Debug\SkyCrew.GroundCrew.resources
+C:\Users\btsho\Source\Repos\SKYCREWUIMOCK\SkyCrew\obj\Debug\SkyCrew.Login.resources
+C:\Users\btsho\Source\Repos\SKYCREWUIMOCK\SkyCrew\obj\Debug\SkyCrew.Management.resources
+C:\Users\btsho\Source\Repos\SKYCREWUIMOCK\SkyCrew\obj\Debug\SkyCrew.Pilot.resources
+C:\Users\btsho\Source\Repos\SKYCREWUIMOCK\SkyCrew\obj\Debug\SkyCrew.Properties.Resources.resources
+C:\Users\btsho\Source\Repos\SKYCREWUIMOCK\SkyCrew\obj\Debug\SkyCrew.csproj.GenerateResource.cache
+C:\Users\btsho\Source\Repos\SKYCREWUIMOCK\SkyCrew\obj\Debug\SkyCrew.csproj.CoreCompileInputs.cache
