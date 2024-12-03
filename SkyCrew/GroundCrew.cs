@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Configuration;
 using System.Data;
-// STEP 1: Uncomment the following line when switching back to database
-// using System.Data.SqlClient;
+using System.Drawing;
 using System.Windows.Forms;
 using MaterialSkin;
 using MaterialSkin.Controls;
-using SkyCrew;
 
 namespace SkyCrew
 {
